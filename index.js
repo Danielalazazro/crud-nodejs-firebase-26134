@@ -1,18 +1,28 @@
 import express from 'express';
+import productsRouter from "./src/routes/products_router.js";
+import usersRouters from "./src/routes/users_router.js";
 //creo un listado de productos
-const products = [
-    {id:1, name: "Poducto 1", price: 10},
-    {id:2, name: "Poducto 2", price: 20},
-    {id:3, name: "Poducto 3", price: 30},
-];
+
 
 //Creamos 1 servidor que envia respuestas a las peticiones
 console.log('Proximamente express')
 const app = express();
+const PORT= 3000;
+app.use(express.json()) ;
+app.use(usersRouters);
+
 app.get("/",(req,res) => {
     res.send("Hello world!!");
 
 });
+
+app.get("/",(req,res) => {
+    res.send(
+        `<h1> API de productso </h1>
+        <p> Servidor funcionando correctamente <p>`
+    )
+});
+app.use('/api/products',productsRouter);
 //creo un midle word si nadie responde, 
 app.use((req,res,next) => {
     console.log(req.method,req.url);
