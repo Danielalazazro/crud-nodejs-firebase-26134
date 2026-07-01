@@ -2,6 +2,7 @@ import express from 'express';
 import cors from "cors";
 import productsRouter from "./src/routes/products_router.js";
 import usersRouters from "./src/routes/users_router.js";
+import categoriesRouter from "./src/routes/categories_routers.js"
 //creo un listado de productos
 //Creamos 1 servidor que envia respuestas a las peticiones
 console.log('Proximamente express')
@@ -9,11 +10,31 @@ const app = express();
 const PORT= 3000;
 
 app.use(express.json()) ;
-app.use(usersRouters);
+app.use(usersRouters);//midleword  a nivel aplicaccion , cualquier aplicacion pasa por este midleword
+//Lo mismo que cors cualquier aplicacion que pasa por este midleword , filtro 
+app.use('/api/products',productsRouter);
+//      prefijo 
+app.use("/api/categories",categoriesRouter);
+app.use(cors());
 
 app.get("/",(req,res) => {
     res.send("Hello world!!");
 
+});
+app.get("/",(req,res) => {
+    //res.send(
+        //`<h1> API products </h1>`
+
+    //)
+    res.json({
+        message:"Servidor funcionando correctamente"
+    })
+});
+app.get("/up",(req,res) => {
+    res.json({
+        status:"ok",
+        message:"servidor activo",
+    });
 });
 
 app.get("/prueba/:uid/category/:catId",(req,res) => {
@@ -31,7 +52,7 @@ app.get('/api/products/search/:q',(req,res) => {
     const {q} = req.params;
     res.send(`Search query: ${q}`);
 });
-app.use('/api/products',productsRouter);
+
 //creo un midle word si nadie responde, 
 app.use((req,res,next) => {
     console.log(req.method,req.url);

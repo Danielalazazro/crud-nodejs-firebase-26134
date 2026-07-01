@@ -22,6 +22,11 @@ export const createProduct = (req,res) => {
     if (!name || !price || !stock){
         return res.status(400).json({message: "Faltan datos obligatorios"});
     }
+    if (categoryId != 1){
+        return res.status(404).json({
+            message:"Categoria no valida"
+        });
+    }
     //const newProduct1 = {};
     const newProduct = {
         id : products.length + 1,
